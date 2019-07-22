@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ASP_CORE_REACT.Models;
 
 namespace ASP_CORE_REACT.Controllers
 {
@@ -15,23 +16,10 @@ namespace ASP_CORE_REACT.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<Users> GetUsers()
         {
-            int iter = 0;
-            return Enumerable.Range(1, 5).Select(index =>
-                new User {
-                    ID = iter++,
-                    Name = "Jan",
-                    Surname = "Nowak"
-                }
-            );
+            BloggingDBContext db = new BloggingDBContext();
+            return db.Users.Select(n => n);
         }
-    }
-
-    public class User
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
     }
 }

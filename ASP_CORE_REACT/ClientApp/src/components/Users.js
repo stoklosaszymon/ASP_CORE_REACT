@@ -27,10 +27,10 @@ export class Users extends Component {
                 <tbody>
                     {
                         users.map(user =>
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.surname}</td>
+                            <tr key={user.userId}>
+                                <td>{user.userId}</td>
+                                <td>{user.userName}</td>
+                                <td>{user.userSurname}</td>
                             </tr>
                         )              
                     }
