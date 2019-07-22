@@ -17,16 +17,20 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]")]
         public IEnumerable<User> GetUsers()
         {
-            return Enumerable.Range(1, 5).Select(index => new User
-            {
-                Name = "Jan",
-                Surname = "Nowak"
-            });
+            int iter = 0;
+            return Enumerable.Range(1, 5).Select(index =>
+                new User {
+                    ID = iter++,
+                    Name = "Jan",
+                    Surname = "Nowak"
+                }
+            );
         }
     }
 
     public class User
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
     }

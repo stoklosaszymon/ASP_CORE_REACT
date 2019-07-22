@@ -5,31 +5,35 @@ export class Users extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { forecasts: [], loading: true };
+        this.state = { users: [], loading: true };
 
         fetch('api/Users/GetUsers')
             .then(response => response.json())
             .then(data => {
-                this.setState({ forecasts: data, loading: false });
+                this.setState({ users: data, loading: false });
             });
     }
 
-    static renderForecastsTable(forecasts) {
+    static renderUsersTable(users) {
         return (
             <table className='table table-striped'>
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Surname</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.name}>
-                            <td>{forecast.name}</td>
-                            <td>{forecast.surname}</td>
-                        </tr>
-                    )}
+                    {
+                        users.map(user =>
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.name}</td>
+                                <td>{user.surname}</td>
+                            </tr>
+                        )              
+                    }
                 </tbody>
             </table>
         );
@@ -38,12 +42,11 @@ export class Users extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Users.renderForecastsTable(this.state.forecasts);
+            : Users.renderUsersTable(this.state.users);
 
         return (
             <div>
-                <h1>Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1>Users list: </h1>
                 {contents}
             </div>
         );
