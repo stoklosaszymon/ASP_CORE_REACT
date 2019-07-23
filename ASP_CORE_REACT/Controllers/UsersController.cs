@@ -21,5 +21,30 @@ namespace ASP_CORE_REACT.Controllers
             BloggingDBContext db = new BloggingDBContext();
             return db.Users.Select(n => n);
         }
+
+        [HttpPost("[action]")]
+        public IActionResult AddUser(string name, string surname)
+        {
+            if ( name == null || surname == null)
+            {
+                return NoContent();
+            }
+            BloggingDBContext db = new BloggingDBContext();
+            db.Users.Add(new Users { UserName = name, UserSurname = surname });
+            db.SaveChanges();
+
+            return Redirect("/users");
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult RemoveUser([FromBody] Users user)
+        {
+            BloggingDBContext db = new BloggingDBContext();
+            db.Users.Remove(db.Users.FirstOrDefault(e => e.UserId == user.UserId));
+            db.SaveChanges();
+
+            return Redirect("/users");
+        }
     }
+
 }
