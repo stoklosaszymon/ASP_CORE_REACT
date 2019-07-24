@@ -8,7 +8,7 @@ using ASP_CORE_REACT.Models;
 namespace ASP_CORE_REACT.Controllers
 {
     [Route("api/[controller]")]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         public IActionResult Index()
         {
@@ -18,8 +18,7 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Users> GetUsers()
         {
-            BloggingDBContext db = new BloggingDBContext();
-            return db.Users.Select(n => n);
+            return Database.Users.Select(n => n);
         }
 
         [HttpPost("[action]")]
@@ -29,9 +28,8 @@ namespace ASP_CORE_REACT.Controllers
             {
                 return NoContent();
             }
-            BloggingDBContext db = new BloggingDBContext();
-            db.Users.Add(user);
-            db.SaveChanges();
+            Database.Users.Add(user);
+            Database.SaveChanges();
 
             return Redirect("/users");
         }
@@ -39,9 +37,8 @@ namespace ASP_CORE_REACT.Controllers
         [HttpPost("[action]")]
         public IActionResult RemoveUser([FromBody] Users user)
         {
-            BloggingDBContext db = new BloggingDBContext();
-            db.Users.Remove(db.Users.FirstOrDefault(e => e.UserId == user.UserId));
-            db.SaveChanges();
+            Database.Users.Remove(Database.Users.FirstOrDefault(e => e.UserId == user.UserId));
+            Database.SaveChanges();
 
             return Redirect("/users");
         }
