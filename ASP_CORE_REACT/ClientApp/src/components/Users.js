@@ -6,7 +6,7 @@ export class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [], loading: true, newName: ''
+            users: [], loading: true, newName: '', newSurname: ''
         };
 
         this.onSubmitText = this.onSubmitText.bind(this);
@@ -49,20 +49,21 @@ export class Users extends Component {
     }
 
     onChangeText(event) {
-        this.setState({ newName: event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     onSubmitText(event) {
-            fetch('api/Users/AddUserFetch', {
+            fetch('api/Users/AddUser', {
                 method: "POST",
                 body: JSON.stringify({
-                    UserName: "Zbyszek", UserSurname: "Kromka"
+                    UserName: this.state.newName, UserSurname: this.state.newSurname
                 }),
                 headers: {
                     'Content-type': 'application/json'
                 }
             })
-            event.preventDefault();
+        event.preventDefault();
+        window.location.reload();
     }
 
     onDelete(id) {
@@ -75,6 +76,7 @@ export class Users extends Component {
                 'Content-type': 'application/json'
             }
         })
+        window.location.reload();
     }
 
     render() {
@@ -84,7 +86,7 @@ export class Users extends Component {
 
         return (
             <div>
-                <Test/>
+                <NewUserInput onChange={this.onChangeText} onSubmit={this.onSubmitText} />
                 <h1>Users list: </h1>
                 {contents}
             </div>
@@ -92,11 +94,9 @@ export class Users extends Component {
     }
 }
 
-const Test = () =>
-    <div>
-        <form action="api/Users/AddUser" method="post">
-            <input type="text" name="name" placeholder="Name" />
-            <input type="text" name="surname" placeholder="Surname" />
-                <input type="submit" value="Sign Up"/>
-        </form>
-    </div>
+const NewUserInput = ({ onChange, onSubmit }) =>
+    <form onSubmit={ onSubmit }>
+        <input type="text" name="newName" placeholder="Name" onChange={onChange}/>
+        <input type="text" name="newSurname" placeholder="Surname" onChange={onChange} />
+        <input type="submit" />
+    </form>

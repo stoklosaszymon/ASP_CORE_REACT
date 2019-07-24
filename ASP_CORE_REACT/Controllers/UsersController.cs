@@ -23,14 +23,14 @@ namespace ASP_CORE_REACT.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult AddUser(string name, string surname)
+        public IActionResult AddUser([FromBody] Users user)
         {
-            if ( name == null || surname == null)
+            if ( user == null)
             {
                 return NoContent();
             }
             BloggingDBContext db = new BloggingDBContext();
-            db.Users.Add(new Users { UserName = name, UserSurname = surname });
+            db.Users.Add(user);
             db.SaveChanges();
 
             return Redirect("/users");
