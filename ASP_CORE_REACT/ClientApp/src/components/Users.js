@@ -10,13 +10,23 @@ export class Users extends Component {
         };
 
         this.onSubmitText = this.onSubmitText.bind(this);
-        this.onChangeText = this.onChangeText.bind(this);
+        this.onChangeText = this.onChangeText.bind(this); 
+    }
 
+    componentDidMount() {
+        this.fetchUsersData();
+    }
+
+    fetchUsersData() {
         fetch('api/Users/GetUsers')
             .then(response => response.json())
             .then(data => {
                 this.setState({ users: data, loading: false });
             });
+    }
+
+    componentDidUpdate() {
+        this.fetchUsersData();
     }
 
     renderUsersTable(users) {
@@ -63,7 +73,6 @@ export class Users extends Component {
                 }
             })
         event.preventDefault();
-        window.location.reload();
     }
 
     onDelete(id) {
@@ -76,7 +85,6 @@ export class Users extends Component {
                 'Content-type': 'application/json'
             }
         })
-        window.location.reload();
     }
 
     render() {
