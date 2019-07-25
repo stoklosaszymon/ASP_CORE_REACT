@@ -5,6 +5,10 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Users } from './components/Users';
+import { Posts } from './components/Posts';
+import { Post } from './components/Post';
+
+
 
 export default class App extends Component {
   static displayName = App.name;
@@ -16,6 +20,8 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/users' component={Users} />
+        <Route path='/posts' component={Posts} />
+        <Route path='/post/:id' component={Post} />
       </Layout>
     );
   }

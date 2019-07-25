@@ -1,0 +1,14 @@
+﻿.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.container input{ 
+    width: 50%;
+    margin: 0px 0px 10px 0px;
+}
+
+.container textarea {
+    width: 95%;
+    margin: 0px 0px 10px 0px;
+}
