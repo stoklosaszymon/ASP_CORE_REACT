@@ -22,25 +22,17 @@ namespace ASP_CORE_REACT.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult AddUser([FromBody] Users user)
+        public void AddUser([FromBody] Users user)
         {
-            if ( user == null)
-            {
-                return NoContent();
-            }
             Database.Users.Add(user);
             Database.SaveChanges();
-
-            return Redirect("/users");
         }
 
         [HttpPost("[action]")]
-        public IActionResult RemoveUser([FromBody] Users user)
+        public void RemoveUser([FromBody] Users user)
         {
             Database.Users.Remove(Database.Users.FirstOrDefault(e => e.UserId == user.UserId));
             Database.SaveChanges();
-
-            return Redirect("/users");
         }
     }
 

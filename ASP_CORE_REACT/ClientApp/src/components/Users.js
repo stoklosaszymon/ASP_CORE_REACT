@@ -41,18 +41,7 @@ export class Users extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        users.map(user =>
-                            <tr key={user.userId}>
-                                <td>{user.userId}</td>
-                                <td>{user.userName}</td>
-                                <td>{user.userSurname}</td>
-                                <td>
-                                    <button onClick={() => this.onDelete(user.userId) }>Remove</button>
-                                </td>
-                            </tr>
-                        )              
-                    }
+                    <PrintList list={this.state.users} onDelete={ this.onDelete } />
                 </tbody>
             </table>
         );
@@ -108,3 +97,15 @@ const NewUserInput = ({ onChange, onSubmit }) =>
         <input type="text" name="newSurname" placeholder="Surname" onChange={onChange} />
         <input type="submit" />
     </form>
+
+const PrintList = ({ list, onDelete }) => 
+    list.map(user =>
+        <tr key={user.userId}>
+            <td>{user.userId}</td>
+            <td>{user.userName}</td>
+            <td>{user.userSurname}</td>
+            <td>
+                <button onClick={() => onDelete(user.userId)}>Remove</button>
+            </td>
+        </tr>
+    )
