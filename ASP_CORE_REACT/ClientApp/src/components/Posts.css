@@ -1,14 +1,42 @@
 ﻿.container {
+    width: 100%;
+    position: center;
+}
+
+
+.addPostContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+}
+
+.addPostChild{
+    margin: 5px 5px 5px 5px;
+}
+
+.addPostChild textarea {
+    width: 500px;
+}
+
+.postListContainer {
     display: flex;
     flex-direction: column;
 }
 
-.container input{ 
-    width: 50%;
-    margin: 0px 0px 10px 0px;
+.postListContainer:hover a {
+    text-decoration: none;
 }
 
-.container textarea {
-    width: 95%;
-    margin: 0px 0px 10px 0px;
+.postListContainer a{
+    color: black;
+}
+
+.post {
+    margin: 5px 5px 5px 5px;
+}
+
+
+.post:hover {
+    background-color: darksalmon;
 }

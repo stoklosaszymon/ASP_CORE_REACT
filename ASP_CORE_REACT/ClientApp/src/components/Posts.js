@@ -11,10 +11,13 @@ export class Posts extends Component {
 
         this.onChangeText = this.onChangeText.bind(this);
         this.onSubmitPost = this.onSubmitPost.bind(this);
-        this.onClickPost = this.onClickPost.bind(this);
     }
 
     componentDidMount() {
+        this.fetchPosts();
+    }
+
+    componentDidUpdate() {
         this.fetchPosts();
     }
 
@@ -44,33 +47,44 @@ export class Posts extends Component {
             .catch(err => console.log(err));
     }
 
-    onClickPost = (id) => {
-        
-    }
-
     render() {
+        let list = this.state.posts.count === 0 ? <h2>Loading...</h2> : <RenderPosts posts={this.state.posts} />
         return (
-            <div>
-            <AddNewPost onChange={this.onChangeText} onSubmit={this.onSubmitPost}/>
-                 <RenderPosts posts={this.state.posts} />
+            <div className="container">
+                <div className="addPostContainer">
+                <AddNewPost onChange={this.onChangeText} onSubmit={this.onSubmitPost}/>
+                </div>
+                <div className="postListContainer">
+                    {list}
+                </div>    
             </div>
-
         );
     }
 }
 
+let stringCutter = (text, count) => {
+    return text.length > count ? text.substring(0, text.substring(0, count).lastIndexOf('.') ) + '...' : text;
+}
+
 const RenderPosts = ({ posts, }) =>
     posts.map(post =>
-        <div key={post.postId}>
+        <div key={post.postId} className="post">
             <a href={'/post/' + post.postId}>
                 <h3>{post.title}</h3>
+                <article> {stringCutter(post.content, 200)} </article>
             </a>
         </div>
     );
 
 const AddNewPost = ({ onChange, onSubmit }) =>
-        <form className="container" onSubmit={ onSubmit }>
-            <input className="input" type="text" onChange={ onChange } name="newTitle"/>
-            <textarea name="newContent" onChange={onChange}/>
-            <input type="submit" />
+        <form onSubmit={onSubmit}>
+            <div className="addPostChild">
+                <input type="text" onChange={onChange} name="newTitle" placeholder="Title" />
+            </div>
+            <div className="addPostChild">
+                <textarea name="newContent" onChange={onChange} placeholder="Content..." />
+            </div>
+            <div className="addPostChild">
+                <input type="submit" className="submit" />
+            </div>
         </form>
