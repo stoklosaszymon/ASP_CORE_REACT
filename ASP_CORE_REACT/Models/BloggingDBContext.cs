@@ -15,6 +15,7 @@ namespace ASP_CORE_REACT.Models
         {
         }
 
+        public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Posts> Posts { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
@@ -31,16 +32,37 @@ namespace ASP_CORE_REACT.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
+            modelBuilder.Entity<Comments>(entity =>
+            {
+                entity.HasKey(e => e.CommentId)
+                    .HasName("PK__Comments__C3B4DFAAC2A8976C");
+
+                entity.Property(e => e.CommentContent)
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                entity.Property(e => e.ReleaseDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Comments__PostID__4D94879B");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__Comments__UserID__4E88ABD4");
+            });
+
             modelBuilder.Entity<Posts>(entity =>
             {
                 entity.HasKey(e => e.PostId)
-                    .HasName("PK__Posts__AA126038F1CBB240");
-
-                entity.Property(e => e.PostId).HasColumnName("PostID");
+                    .HasName("PK__Posts__AA126038F038435C");
 
                 entity.Property(e => e.Content)
                     .IsRequired()
-                    .HasMaxLength(255);
+                    .HasColumnType("text");
 
                 entity.Property(e => e.LastEditedDate).HasColumnType("date");
 
@@ -48,22 +70,18 @@ namespace ASP_CORE_REACT.Models
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+                    .HasColumnType("text");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Posts)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Posts__UserID__3E52440B");
+                    .HasConstraintName("FK__Posts__UserID__440B1D61");
             });
 
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
                     .HasName("PK__Users__1788CCAC4D188597");
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()

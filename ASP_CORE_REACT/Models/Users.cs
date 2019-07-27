@@ -7,6 +7,7 @@ namespace ASP_CORE_REACT.Models
     {
         public Users()
         {
+            Comments = new HashSet<Comments>();
             Posts = new HashSet<Posts>();
         }
 
@@ -14,6 +15,7 @@ namespace ASP_CORE_REACT.Models
         public string UserName { get; set; }
         public string UserSurname { get; set; }
 
+        public virtual ICollection<Comments> Comments { get; set; }
         public virtual ICollection<Posts> Posts { get; set; }
     }
 }
