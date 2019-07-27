@@ -1,9 +1,13 @@
 ﻿import React, { Component } from 'react';
+import './Comments.js';
+import { Comments } from './Comments.js';
 
 
 export class Post extends Component {
     constructor(props) {
         super(props);
+
+        this.id = this.props.match.params.id;
 
         this.state = {
             post: []
@@ -11,12 +15,11 @@ export class Post extends Component {
     }
 
     componentDidMount() {
-        const { id } = this.props.match.params
         fetch('api/Posts/GetPost',
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    PostId: id
+                    PostId: this.id
                 }),
                 headers: {
                     'Content-type': 'application/json'
@@ -34,7 +37,10 @@ export class Post extends Component {
             <div>
                 <h1>{this.state.post.title}</h1>
                 <p>{this.state.post.content}</p>
-            </div>
+                <div>
+                    <Comments postId={this.id} />
+                </div>
+            </div> 
         );
     }
 }
