@@ -18,6 +18,8 @@ namespace ASP_CORE_REACT.Controllers
         [HttpPost]
         public void AddCommentToPost([FromBody] Comments comment)
         {
+            comment.ReleaseDate = DateTime.Now;
+            comment.Edited = false;
             Database.Comments.Add(comment);
             Database.SaveChanges();
         }
