@@ -25,10 +25,6 @@ export class Users extends Component {
             });
     }
 
-    componentDidUpdate() {
-        this.fetchUsersData();
-    }
-
     renderUsersTable(users) {
         return (
             <table className='table table-striped'>
@@ -60,7 +56,7 @@ export class Users extends Component {
                 headers: {
                     'Content-type': 'application/json'
                 }
-            })
+            }).then( response => this.fetchUsersData() )
         event.preventDefault();
     }
 
@@ -73,7 +69,7 @@ export class Users extends Component {
             headers: {
                 'Content-type': 'application/json'
             }
-        })
+        }).then( response => this.fetchUsersData() )
     }
 
     render() {

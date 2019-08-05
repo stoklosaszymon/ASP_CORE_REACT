@@ -18,7 +18,7 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Users> GetUsers()
         {
-            return Database.Users.Select(n => n);
+            return Database.Users.AsEnumerable();
         }
 
         [HttpPost("[action]")]

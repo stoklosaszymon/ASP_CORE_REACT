@@ -17,10 +17,6 @@ export class Posts extends Component {
         this.fetchPosts();
     }
 
-    componentDidUpdate() {
-        this.fetchPosts();
-    }
-
     onChangeText(event) {
         this.setState({ [event.target.name]: event.target.value });
     }
