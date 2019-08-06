@@ -57,7 +57,7 @@ export class Users extends Component {
                     'Content-type': 'application/json'
                 }
             }).then( response => this.fetchUsersData() )
-        event.preventDefault();
+            event.preventDefault();
     }
 
     onDelete(id) {

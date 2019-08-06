@@ -5,21 +5,25 @@ export class Login extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { login: '', passwordHash: '', looged: false };
+        this.state = { login: '', password: '', logged: false };
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
 
-    onSubmit() {
+    onSubmit(event) {
+        event.preventDefault();
         fetch('Login/SignIn', {
             method: 'POST',
-            body: JSON.strigify({ Email: this.state.login, PasswordHash: this.state.passwordHash }),
+            body: JSON.stringify({
+                Email: this.state.login, Password: this.state.password
+            }),
             headers: {
                 'Content-type': 'application/json'
             }
-        }).then(response => this.setState({ logged: true }));
+        }).then(response => response.json())
+            .then(response => this.setState({ logged: response }))
     }
 
     onChange(event) {
@@ -27,12 +31,14 @@ export class Login extends Component {
     }
 
     render() {
+        let isLogged = this.state.logged ? <p>zalogowano</p> : <p>nie zalogowano</p>;
         return (
             <div>
-                <p> {this.state.logged} </p>
+                {isLogged}
                 <form onSubmit={this.onSubmit}>
                     <input type="text" name="login" placeholder="Email" onChange={this.onChange}/>
-                    <input type="text" name="password" placeholder="Password" onChange={this.onChange}/>
+                    <input type="password" name="password" placeholder="Password" onChange={this.onChange} />
+                    <input type="submit" />
                 </form>
             </div>
         );
