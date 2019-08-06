@@ -83,6 +83,10 @@ namespace ASP_CORE_REACT.Models
                 entity.HasKey(e => e.UserId)
                     .HasName("PK__Users__1788CCAC4D188597");
 
+                entity.Property(e => e.Email).HasMaxLength(255);
+
+                entity.Property(e => e.PasswordHash).HasMaxLength(256);
+
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(255);
