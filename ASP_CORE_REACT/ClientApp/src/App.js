@@ -9,12 +9,12 @@ import { Posts } from './components/Posts';
 import { Post } from './components/Post';
 
 
-
 export default class App extends Component {
-  static displayName = App.name;
+    static displayName = App.name;
 
-  render () {
-    return (
+    render() {
+
+      return (
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
@@ -26,3 +26,6 @@ export default class App extends Component {
     );
   }
 }
+
+
+

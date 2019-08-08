@@ -1,11 +1,12 @@
 ﻿import React, { Component } from 'react'
+import { connect } from 'react-redux';
 
-export class Login extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { login: '', password: '', logged: false };
+        this.state = { login: '', password: ''};
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -13,6 +14,7 @@ export class Login extends Component {
 
 
     onSubmit(event) {
+        const { onLogIn } = this.props;
         event.preventDefault();
         fetch('Login/SignIn', {
             method: 'POST',
@@ -23,7 +25,7 @@ export class Login extends Component {
                 'Content-type': 'application/json'
             }
         }).then(response => response.json())
-            .then(response => this.setState({ logged: response }))
+            .then(response => response ? onLogIn() : false)
     }
 
     onChange(event) {
@@ -31,7 +33,8 @@ export class Login extends Component {
     }
 
     render() {
-        let isLogged = this.state.logged ? <p>zalogowano</p> : <p>nie zalogowano</p>;
+        const { logged, onLogOut } = this.props;
+        let isLogged = logged ? <button onClick={onLogOut}>wyloguj</button> : <p>zaloguj sie</p>;
         return (
             <div>
                 {isLogged}
@@ -44,3 +47,15 @@ export class Login extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return { logged: state.logged };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onLogIn: () => dispatch({ type: 'LOG_IN' }),
+        onLogOut: () => dispatch({ type: 'LOG_OUT' }),
+    }
+};
+
+export default Login = connect(mapStateToProps, mapDispatchToProps)(Login);

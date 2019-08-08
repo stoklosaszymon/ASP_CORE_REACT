@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 export class Comments extends Component {
     constructor(props) {
@@ -36,7 +37,8 @@ export class Comments extends Component {
         this.setState({ newComment: event.target.value });
     }
 
-    onSubmitNewComment() {
+    onSubmitNewComment(event) {
+        event.preventDefault();
         fetch('Comments/AddCommentToPost', {
             method: 'POST',
             body: JSON.stringify({
@@ -50,9 +52,12 @@ export class Comments extends Component {
     }
 
     render() {
+        const { logged } = this.props;
         return (
             <div>
-                <AddComment content={this.state.newComment} onChange={this.onChangeNewComment} onSubmit={this.onSubmitNewComment}/>
+                {
+                    logged && <AddComment content={this.state.newComment} onChange={this.onChangeNewComment} onSubmit={this.onSubmitNewComment} />
+                }             
                 <RenderComments comments={this.state.comments} />
             </div>
         );
@@ -72,5 +77,10 @@ const RenderComments = ({ comments }) =>
         <div key={com.commentId}>
             <p>{com.commentContent}</p>
             </div>
-        )
- 
+    )
+
+const mapStateToProps = (state) => {
+    return { logged: state.logged };
+};
+
+export default Comments = connect(mapStateToProps)(Comments);
