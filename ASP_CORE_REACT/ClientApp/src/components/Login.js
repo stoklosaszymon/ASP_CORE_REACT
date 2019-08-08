@@ -32,17 +32,21 @@ class Login extends Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
+
     render() {
         const { logged, onLogOut } = this.props;
-        let isLogged = logged ? <button onClick={onLogOut}>wyloguj</button> : <p>zaloguj sie</p>;
+
+        const logForm =
+            <form onSubmit={this.onSubmit}>
+                <input type="text" name="login" placeholder="Email" onChange={this.onChange} />
+                <input type="password" name="password" placeholder="Password" onChange={this.onChange} />
+                <input type="submit" value='Login' />
+            </form>;
+
+        let isLogged = logged ? <button onClick={onLogOut}>wyloguj</button> : logForm;
         return (
             <div>
                 {isLogged}
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" name="login" placeholder="Email" onChange={this.onChange}/>
-                    <input type="password" name="password" placeholder="Password" onChange={this.onChange} />
-                    <input type="submit" />
-                </form>
             </div>
         );
     }

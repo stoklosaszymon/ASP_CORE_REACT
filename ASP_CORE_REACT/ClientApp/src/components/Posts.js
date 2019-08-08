@@ -1,5 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './Posts.css';
+import { NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export class Posts extends Component {
     constructor(props) {
@@ -19,6 +21,10 @@ export class Posts extends Component {
 
     onChangeText(event) {
         this.setState({ [event.target.name]: event.target.value });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.posts.length !== nextState.posts.length ? true : false;
     }
 
     onSubmitPost(event) {
@@ -48,7 +54,7 @@ export class Posts extends Component {
         return (
             <div className="container">
                 <div className="addPostContainer">
-                <AddNewPost onChange={this.onChangeText} onSubmit={this.onSubmitPost}/>
+                    <AddNewPost onChange={this.onChangeText} onSubmit={this.onSubmitPost}/>
                 </div>
                 <div className="postListContainer">
                     {list}
@@ -65,10 +71,10 @@ let stringCutter = (text, count) => {
 const RenderPosts = ({ posts, }) =>
     posts.map(post =>
         <div key={post.postId} className="post">
-            <a href={'/post/' + post.postId}>
-                <h3>{post.title}</h3>
-                <article> {stringCutter(post.content, 200)} </article>
-            </a>
+                <NavLink tag={Link} className="text-dark" to={'/post/' + post.postId}>
+                    <h3>{post.title}</h3>
+                    <p> {stringCutter(post.content, 200)} </p>
+                </NavLink>
         </div>
     );
 
