@@ -4,7 +4,7 @@ import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-class Posts extends Component {
+export default class Posts extends Component {
     constructor(props) {
         super(props);
 
@@ -94,4 +94,4 @@ const mapStateToProps = (state) => {
     return { logged: state.logged, loggedUserId: state.loggedUserId };
 };
 
-export default Posts = connect(mapStateToProps)(Posts);
+Posts = connect(mapStateToProps)(Posts);

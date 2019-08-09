@@ -39,7 +39,6 @@ class Login extends Component {
 
     render() {
         const { logged, onLogOut, userId } = this.props;
-        console.log(userId)
         const logForm =
             <div>
                 <form onSubmit={this.onSubmit}>
