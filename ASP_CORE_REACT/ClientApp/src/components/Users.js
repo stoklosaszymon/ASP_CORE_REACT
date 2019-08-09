@@ -74,7 +74,7 @@ export class Users extends Component {
 
     render() {
         let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p>Loading...</p>
             : this.renderUsersTable(this.state.users);
 
         return (

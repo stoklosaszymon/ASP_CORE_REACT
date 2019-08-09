@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using ASP_CORE_REACT.interfaces;
 using ASP_CORE_REACT.classes;
-
+using ASP_CORE_REACT.Models;
 
 namespace ASP_CORE_REACT.Controllers
 {
@@ -30,9 +30,5 @@ namespace ASP_CORE_REACT.Controllers
         }
     }
 
-    public class Pass
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+
 }

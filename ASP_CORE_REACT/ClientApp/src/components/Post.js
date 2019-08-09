@@ -26,9 +26,11 @@ export class Post extends Component {
                 }
             })
             .then(response => response.json())
-            .then(data => {
-                this.setState({ post: data });
-            })
+            .then(data => this.setState(
+                () => ({
+                    post: data
+                })
+            ))
             .catch(err => console.log(err));
     }
 
