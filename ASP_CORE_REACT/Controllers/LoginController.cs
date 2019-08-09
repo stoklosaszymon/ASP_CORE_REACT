@@ -5,15 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
+using ASP_CORE_REACT.interfaces;
+using ASP_CORE_REACT.classes;
+
 
 namespace ASP_CORE_REACT.Controllers
 {
     [Route("[controller]")]
     public class LoginController : BaseController
     {
-        public IActionResult Index()
+        private readonly IHasher _hasher;
+        
+        public LoginController( IHasher hasher)
         {
-            return Content("asd");
+            _hasher = hasher;
         }
 
         [HttpPost("[action]")]
@@ -21,28 +26,7 @@ namespace ASP_CORE_REACT.Controllers
         {
             var foundUser = Database.Users.FirstOrDefault(user => user.Email == pass.Email);
 
-            return foundUser != null ? foundUser.PasswordHash == Hasher.HashString(pass.Password) : false;
-        }
-    }
-
-    public static class Hasher
-    {
-        public static string HashString(string password)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
-            }
+            return foundUser != null ? foundUser.PasswordHash == _hasher.HashString(pass.Password) : false;
         }
     }
 

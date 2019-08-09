@@ -1,5 +1,8 @@
 ﻿import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
 
 class Login extends Component {
 
@@ -37,11 +40,14 @@ class Login extends Component {
         const { logged, onLogOut } = this.props;
 
         const logForm =
-            <form onSubmit={this.onSubmit}>
-                <input type="text" name="login" placeholder="Email" onChange={this.onChange} />
-                <input type="password" name="password" placeholder="Password" onChange={this.onChange} />
-                <input type="submit" value='Login' />
-            </form>;
+            <div>
+                <form onSubmit={this.onSubmit}>
+                    <input type="text" name="login" placeholder="Email" onChange={this.onChange} />
+                    <input type="password" name="password" placeholder="Password" onChange={this.onChange} />
+                    <input type="submit" value='Login' />
+                </form>
+                <NavLink tag={Link} className="text-dark" to="/register">Create new account</NavLink>
+             </div>;
 
         let isLogged = logged ? <button onClick={onLogOut}>wyloguj</button> : logForm;
         return (

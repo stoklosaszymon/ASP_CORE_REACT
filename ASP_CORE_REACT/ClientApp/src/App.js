@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 import { Users } from './components/Users';
 import { Posts } from './components/Posts';
 import { Post } from './components/Post';
-
+import { Register } from './components/Register'
 
 export default class App extends Component {
     static displayName = App.name;
@@ -18,6 +18,8 @@ export default class App extends Component {
         <Route path='/users' component={Users} />
         <Route path='/posts' component={Posts} />
         <Route path='/post/:id' component={Post} />
+        <Route path='/register' component={Register} />
+
       </Layout>
     );
   }
