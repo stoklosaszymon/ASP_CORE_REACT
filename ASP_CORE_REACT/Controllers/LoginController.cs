@@ -22,11 +22,11 @@ namespace ASP_CORE_REACT.Controllers
         }
 
         [HttpPost("[action]")]
-        public bool SignIn([FromBody] Pass pass)
+        public int SignIn([FromBody] Pass pass)
         {
             var foundUser = Database.Users.FirstOrDefault(user => user.Email == pass.Email);
-
-            return foundUser != null ? foundUser.PasswordHash == _hasher.HashString(pass.Password) : false;
+            var checkPassword = foundUser.PasswordHash == _hasher.HashString(pass.Password);
+            return foundUser != null && checkPassword ? foundUser.UserId : 0;
         }
     }
 

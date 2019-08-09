@@ -3,7 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Users } from './components/Users';
-import { Posts } from './components/Posts';
+import  Posts  from './components/Posts';
 import { Post } from './components/Post';
 import { Register } from './components/Register'
 

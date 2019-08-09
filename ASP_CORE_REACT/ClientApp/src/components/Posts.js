@@ -2,8 +2,9 @@
 import './Posts.css';
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export class Posts extends Component {
+class Posts extends Component {
     constructor(props) {
         super(props);
 
@@ -23,29 +24,26 @@ export class Posts extends Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.posts.length !== nextState.posts.length ? true : false;
-    }
 
     onSubmitPost(event) {
+        console.log(this.props.loggedUserId);
         fetch('api/Posts/AddPost', {
             method: "POST",
             body: JSON.stringify({
-                Title: this.state.newTitle, Content: this.state.newContent
+                Title: this.state.newTitle, Content: this.state.newContent, UserId: this.props.loggedUserId
             }),
             headers: {
                 'Content-type': 'application/json'
             }
         })
+        .then( () => this.fetchPosts() )
         event.preventDefault();
     }
 
     fetchPosts() {
         fetch('api/Posts/GetAllPosts')
             .then(response => response.json())
-            .then(data => {
-                this.setState({ posts: data });
-            })
+            .then(data => this.setState({ posts: data }))
             .catch(err => console.log(err));
     }
 
@@ -68,11 +66,12 @@ let stringCutter = (text, count) => {
     return text.length > count ? text.substring(0, text.substring(0, count).lastIndexOf('.') ) + '...' : text;
 }
 
-const RenderPosts = ({ posts, }) =>
+const RenderPosts = ({ posts }) =>
     posts.map(post =>
         <div key={post.postId} className="post">
                 <NavLink tag={Link} className="text-dark" to={'/post/' + post.postId}>
-                    <h3>{post.title}</h3>
+                <h3>{post.title}</h3>
+                <h4>posted by {post.userId}</h4>
                     <p> {stringCutter(post.content, 200)} </p>
                 </NavLink>
         </div>
@@ -89,4 +88,10 @@ const AddNewPost = ({ onChange, onSubmit }) =>
             <div className="addPostChild">
                 <input type="submit" className="submit" />
             </div>
-        </form>
+    </form>
+
+const mapStateToProps = (state) => {
+    return { logged: state.logged, loggedUserId: state.loggedUserId };
+};
+
+export default Posts = connect(mapStateToProps)(Posts);

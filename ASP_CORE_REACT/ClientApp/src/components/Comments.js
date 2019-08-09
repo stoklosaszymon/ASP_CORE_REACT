@@ -29,7 +29,11 @@ export class Comments extends Component {
                 'Content-type': 'application/json'
             }})
         .then(response => response.json())
-        .then(data => this.setState({ comments: data }))
+            .then(data => this.setState(
+                () => ({
+                    comments: data
+                })
+            ))
         .catch( err => console.log(err))
     }   
 
@@ -42,12 +46,12 @@ export class Comments extends Component {
         fetch('Comments/AddCommentToPost', {
             method: 'POST',
             body: JSON.stringify({
-                PostId: this.id, CommentContent: this.state.newComment, 
+                PostId: this.id, CommentContent: this.state.newComment, UserId: this.props.loggedUserId 
             }),
             headers: {
                 'Content-type': 'application/json'
             }
-        })
+        }).then( () => this.fetchCommentsForPost(this.id) ) 
            .catch(err => console.log(err))
     }
 
@@ -74,13 +78,14 @@ const AddComment = ({ content, onSubmit, onChange }) =>
 
 const RenderComments = ({ comments }) =>
         comments.map(com =>
-        <div key={com.commentId}>
-            <p>{com.commentContent}</p>
+            <div key={com.commentId}>
+                <h3>posted by {com.userId}</h3>
+                <p>{com.commentContent}</p>
             </div>
     )
 
 const mapStateToProps = (state) => {
-    return { logged: state.logged };
+    return { logged: state.logged, loggedUserId: state.loggedUserId };
 };
 
 export default Comments = connect(mapStateToProps)(Comments);

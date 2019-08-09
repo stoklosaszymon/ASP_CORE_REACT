@@ -29,7 +29,7 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Posts> GetAllPosts()
         {
-            return Database.Posts.Select(n => n);
+            return Database.Posts.AsEnumerable();
         }
 
         [HttpPost("[action]")]

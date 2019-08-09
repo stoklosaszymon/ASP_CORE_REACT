@@ -21,6 +21,13 @@ namespace ASP_CORE_REACT.Controllers
             return Database.Users.AsEnumerable();
         }
 
+        [HttpGet("[action]/{id}")]
+        public UserData GetUserNameById(int id)
+        {
+            var foundUser = Database.Users.FirstOrDefault(user => user.UserId == id);
+            return new UserData { UserName = foundUser.UserName, UserSurname = foundUser.UserSurname };
+        }
+
         [HttpPost("[action]")]
         public void AddUser([FromBody] Users user)
         {
@@ -36,4 +43,10 @@ namespace ASP_CORE_REACT.Controllers
         }
     }
 
+}
+
+public class UserData
+{
+    public string UserName { get; set; }
+    public string UserSurname { get; set; }
 }

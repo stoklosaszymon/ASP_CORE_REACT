@@ -27,8 +27,9 @@ class Login extends Component {
             headers: {
                 'Content-type': 'application/json'
             }
-        }).then(response => response.json())
-            .then(response => response ? onLogIn() : false)
+        })
+        .then(response => response.json())
+            .then(data => data !== 0 ? onLogIn(data) : false)
     }
 
     onChange(event) {
@@ -37,8 +38,8 @@ class Login extends Component {
 
 
     render() {
-        const { logged, onLogOut } = this.props;
-
+        const { logged, onLogOut, userId } = this.props;
+        console.log(userId)
         const logForm =
             <div>
                 <form onSubmit={this.onSubmit}>
@@ -59,11 +60,11 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { logged: state.logged };
+    return { logged: state.logged, loggedUserId: state.loggedUserId };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        onLogIn: () => dispatch({ type: 'LOG_IN' }),
+        onLogIn: (userId) => dispatch({ type: 'LOG_IN', loggedUserId: userId }),
         onLogOut: () => dispatch({ type: 'LOG_OUT' }),
     }
 };
