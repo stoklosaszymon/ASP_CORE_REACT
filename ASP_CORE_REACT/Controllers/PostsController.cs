@@ -27,9 +27,26 @@ namespace ASP_CORE_REACT.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<Posts> GetAllPosts()
+        public IEnumerable<PostsViewModel> GetAllPosts()
         {
-            return Database.Posts.AsEnumerable();
+            var result = new List<PostsViewModel>();
+            var allPosts = Database.Posts.AsEnumerable();
+
+            foreach (var item in allPosts)
+            {
+                var user = Database.Users.FirstOrDefault(usr => usr.UserId == item.UserId);
+                result.Add(new PostsViewModel
+                {
+                    PostId = item.PostId,
+                    Title = item.Title,
+                    Content = item.Content,
+                    ReleaseDate = item.ReleaseDate.ToString("dd/MM/yyyy"),
+                    LastEditedDate = item.LastEditedDate,
+                    UserName = user.UserName,
+                    UserSurname = user.UserSurname,
+                });
+            }
+            return result;
         }
 
         [HttpPost("[action]")]

@@ -32,7 +32,7 @@ export class Comments extends Component {
 
     onSubmitNewComment(event) {
         event.preventDefault();
-        fetch('Comments/AddCommentToPost', {
+        fetch('api/Comments/AddCommentToPost', {
             method: 'POST',
             body: JSON.stringify({
                 PostId: this.id, CommentContent: this.state.newComment, UserId: this.props.loggedUserId 
@@ -68,8 +68,9 @@ const AddComment = ({ content, onSubmit, onChange }) =>
 const RenderComments = ({ comments }) =>
         comments.map(com =>
             <div key={com.commentId}>
-                <h3>posted by {com.userId}</h3>
+                <p>posted by {`${com.userName} ${com.userSurname}`}</p>
                 <p>{com.commentContent}</p>
+                <p>{com.releaseDate}</p>
             </div>
     )
 

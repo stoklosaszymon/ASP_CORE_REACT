@@ -70,9 +70,10 @@ const RenderPosts = ({ posts }) =>
     posts.map(post =>
         <div key={post.postId} className="post">
                 <NavLink tag={Link} className="text-dark" to={'/post/' + post.postId}>
-                <h3>{post.title}</h3>
-                <h4>posted by {post.userId}</h4>
+                    <h3>{post.title}</h3>
+                    <p>{`${post.userName} ${post.userSurname}`}</p>
                     <p> {stringCutter(post.content, 200)} </p>
+                    <p> {post.releaseDate }</p>
                 </NavLink>
         </div>
     );

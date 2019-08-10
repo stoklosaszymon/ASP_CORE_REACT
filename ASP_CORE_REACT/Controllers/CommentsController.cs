@@ -11,12 +11,28 @@ namespace ASP_CORE_REACT.Controllers
     public class CommentsController : BaseController
     {
         [HttpGet("[action]/{postId}")]
-        public IEnumerable<Comments> GetCommentsForPost(int postId)
+        public IEnumerable<CommentViewModel> GetCommentsForPost(int postId)
         {
-            return Database.Comments.Where(el => el.PostId == postId);
+            var foundComments = Database.Comments.Where(el => el.PostId == postId);
+
+            var result = new List<CommentViewModel>();
+            foreach (var item in foundComments)
+            {
+                var user = Database.Users.FirstOrDefault(usr => usr.UserId == item.UserId);
+                result.Add(new CommentViewModel
+                {
+                    CommentId = item.CommentId,
+                    CommentContent = item.CommentContent,
+                    UserName = user.UserName,
+                    UserSurname = user.UserSurname,
+                    ReleaseDate = item.ReleaseDate.ToString("dd/MM/yyyy"),
+                    Edited = item.Edited
+                });
+            }
+            return result;
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public void AddCommentToPost([FromBody] Comments comment)
         {
             comment.ReleaseDate = DateTime.Now;
