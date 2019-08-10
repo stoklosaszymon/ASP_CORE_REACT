@@ -20,21 +20,10 @@ export class Comments extends Component {
     }
 
     fetchCommentsForPost(id) {
-        fetch('Comments/GetCommentsForPost', {
-            method: 'POST',
-            body: JSON.stringify({
-                PostId: this.id
-            }),
-            headers: {
-                'Content-type': 'application/json'
-            }})
-        .then(response => response.json())
-            .then(data => this.setState(
-                () => ({
-                    comments: data
-                })
-            ))
-        .catch( err => console.log(err))
+        fetch(`api/Comments/GetCommentsForPost/${id}`)
+            .then(response => response.json())
+            .then(data => this.setState({ comments: data }))
+            .catch( err => console.log(err))
     }   
 
     onChangeNewComment(event) {

@@ -15,16 +15,7 @@ export class Post extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Posts/GetPost',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    PostId: this.id
-                }),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            })
+        fetch(`api/Posts/GetPost/${this.id}`)
             .then(response => response.json())
             .then(data => this.setState(
                 () => ({

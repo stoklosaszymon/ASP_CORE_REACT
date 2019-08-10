@@ -20,10 +20,10 @@ namespace ASP_CORE_REACT.Controllers
             Database.SaveChanges();
         }
 
-        [HttpPost("[action]")]
-        public Posts GetPost([FromBody] Posts post)
+        [HttpGet("[action]/{postId}")]
+        public Posts GetPost(int postId)
         {
-            return Database.Posts.FirstOrDefault(e => e.PostId == post.PostId);
+            return Database.Posts.FirstOrDefault(e => e.PostId == postId);
         }
 
         [HttpGet("[action]")]

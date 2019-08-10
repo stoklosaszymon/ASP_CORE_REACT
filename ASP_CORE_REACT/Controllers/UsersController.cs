@@ -10,21 +10,16 @@ namespace ASP_CORE_REACT.Controllers
     [Route("api/[controller]")]
     public class UsersController : BaseController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet("[action]")]
         public IEnumerable<Users> GetUsers()
         {
             return Database.Users.AsEnumerable();
         }
 
-        [HttpGet("[action]/{id}")]
-        public UserData GetUserNameById(int id)
+        [HttpGet("[action]/{userId}")]
+        public UserData GetUserNameById(int userId)
         {
-            var foundUser = Database.Users.FirstOrDefault(user => user.UserId == id);
+            var foundUser = Database.Users.FirstOrDefault(user => user.UserId == userId);
             return new UserData { UserName = foundUser.UserName, UserSurname = foundUser.UserSurname };
         }
 

@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP_CORE_REACT.Controllers
 {
+    [Route("api/[controller]")]
     public class CommentsController : BaseController
     {
-        [HttpPost]
-        public IEnumerable<Comments> GetCommentsForPost([FromBody] Posts post)
+        [HttpGet("[action]/{postId}")]
+        public IEnumerable<Comments> GetCommentsForPost(int postId)
         {
-            return Database.Comments.Where(el => el.PostId == post.PostId);
+            return Database.Comments.Where(el => el.PostId == postId);
         }
 
         [HttpPost]
