@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ASP_CORE_REACT.Models;
@@ -29,24 +30,21 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]")]
         public IEnumerable<PostsViewModel> GetAllPosts()
         {
-            var result = new List<PostsViewModel>();
-            var allPosts = Database.Posts.AsEnumerable();
-
-            foreach (var item in allPosts)
-            {
-                var user = Database.Users.FirstOrDefault(usr => usr.UserId == item.UserId);
-                result.Add(new PostsViewModel
-                {
-                    PostId = item.PostId,
-                    Title = item.Title,
-                    Content = item.Content,
-                    ReleaseDate = item.ReleaseDate.ToString("dd/MM/yyyy"),
-                    LastEditedDate = item.LastEditedDate,
-                    UserName = user.UserName,
-                    UserSurname = user.UserSurname,
-                });
-            }
-            return result;
+           return Database.Posts
+               .Join(Database.Users,
+                       post => post.UserId,
+                       usr => usr.UserId,
+                       (post, usr) => new PostsViewModel
+                       {
+                           PostId = post.PostId,
+                           Title = post.Title,
+                           Content = post.Content,
+                           ReleaseDate = post.ReleaseDate.ToString("dd/MM/yyyy"),
+                           LastEditedDate = post.LastEditedDate,
+                           UserName = usr.UserName,
+                           UserSurname = usr.UserSurname,
+                       })
+                       .ToList();
         }
 
         [HttpPost("[action]")]

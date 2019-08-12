@@ -4,7 +4,7 @@ import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-export default class Posts extends Component {
+class Posts extends Component {
     constructor(props) {
         super(props);
 
@@ -26,7 +26,6 @@ export default class Posts extends Component {
 
 
     onSubmitPost(event) {
-        console.log(this.props.loggedUserId);
         fetch('api/Posts/AddPost', {
             method: "POST",
             body: JSON.stringify({
@@ -95,4 +94,4 @@ const mapStateToProps = (state) => {
     return { logged: state.logged, loggedUserId: state.loggedUserId };
 };
 
-Posts = connect(mapStateToProps)(Posts);
+export default Posts = connect(mapStateToProps)(Posts);

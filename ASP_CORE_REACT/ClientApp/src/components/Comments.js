@@ -22,7 +22,7 @@ export class Comments extends Component {
     fetchCommentsForPost(id) {
         fetch(`api/Comments/GetCommentsForPost/${id}`)
             .then(response => response.json())
-            .then(data => this.setState({ comments: data }))
+            .then(data => this.setState({ comments: data }) )
             .catch( err => console.log(err))
     }   
 
@@ -68,7 +68,7 @@ const AddComment = ({ content, onSubmit, onChange }) =>
 const RenderComments = ({ comments }) =>
         comments.map(com =>
             <div key={com.commentId}>
-                <p>posted by {`${com.userName} ${com.userSurname}`}</p>
+                <p>{`${com.userName} ${com.userSurname}`}</p>
                 <p>{com.commentContent}</p>
                 <p>{com.releaseDate}</p>
             </div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ASP_CORE_REACT.Models;
@@ -13,23 +14,19 @@ namespace ASP_CORE_REACT.Controllers
         [HttpGet("[action]/{postId}")]
         public IEnumerable<CommentViewModel> GetCommentsForPost(int postId)
         {
-            var foundComments = Database.Comments.Where(el => el.PostId == postId);
-
-            var result = new List<CommentViewModel>();
-            foreach (var item in foundComments)
-            {
-                var user = Database.Users.FirstOrDefault(usr => usr.UserId == item.UserId);
-                result.Add(new CommentViewModel
-                {
-                    CommentId = item.CommentId,
-                    CommentContent = item.CommentContent,
-                    UserName = user.UserName,
-                    UserSurname = user.UserSurname,
-                    ReleaseDate = item.ReleaseDate.ToString("dd/MM/yyyy"),
-                    Edited = item.Edited
-                });
-            }
-            return result;
+            return Database.Comments.Where(com => com.PostId == postId)
+            .Join(Database.Users,
+                    com => com.UserId,
+                    user => user.UserId,
+                    (com, user) => new CommentViewModel
+                    {
+                        CommentId = com.CommentId,
+                        CommentContent = com.CommentContent,
+                        ReleaseDate = com.ReleaseDate.ToString("MM/dd/yyyy"),
+                        UserName = user.UserName,
+                        UserSurname = user.UserSurname,
+                    })
+                    .ToList();
         }
 
         [HttpPost("[action]")]
