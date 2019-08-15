@@ -33,7 +33,10 @@ namespace ASP_CORE_REACT.Controllers
         [HttpPost("[action]")]
         public void RemoveUser([FromBody] Users user)
         {
-            Database.Users.Remove(Database.Users.FirstOrDefault(e => e.UserId == user.UserId));
+            var removeUser = Database.Users.FirstOrDefault(e => e.UserId == user.UserId);
+            Database.Comments.RemoveRange(Database.Comments.Where(com => com.UserId == removeUser.UserId));
+            Database.Posts.RemoveRange(Database.Posts.Where(post => post.UserId == removeUser.UserId));
+            Database.Users.Remove(removeUser);
             Database.SaveChanges();
         }
     }

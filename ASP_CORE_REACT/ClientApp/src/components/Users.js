@@ -69,7 +69,7 @@ export class Users extends Component {
             headers: {
                 'Content-type': 'application/json'
             }
-        }).then( response => this.fetchUsersData() )
+        }).then( () => this.fetchUsersData() )
     }
 
     render() {
