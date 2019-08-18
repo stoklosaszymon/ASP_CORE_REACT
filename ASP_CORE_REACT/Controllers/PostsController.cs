@@ -10,28 +10,34 @@ namespace ASP_CORE_REACT.Controllers
 {
     
     [Route("api/[controller]")]
-    public class PostsController : BaseController
+    public class PostsController : Controller
     {
+        private BloggingDBContext _context;
+        public PostsController(BloggingDBContext context)
+        {
+            _context = context;
+        }
+
         [HttpPost("[action]")] 
         public void AddPost([FromBody] Posts post)
         {
             post.ReleaseDate = DateTime.Now;
             post.LastEditedDate = DateTime.Now;
-            Database.Posts.Add(post);
-            Database.SaveChanges();
+            _context.Posts.Add(post);
+            _context.SaveChanges();
         }
 
         [HttpGet("[action]/{postId}")]
         public Posts GetPost(int postId)
         {
-            return Database.Posts.FirstOrDefault(e => e.PostId == postId);
+            return _context.Posts.FirstOrDefault(e => e.PostId == postId);
         }
 
         [HttpGet("[action]")]
         public IEnumerable<PostsViewModel> GetAllPosts()
         {
-           return Database.Posts
-               .Join(Database.Users,
+           return _context.Posts
+               .Join(_context.Users,
                        post => post.UserId,
                        usr => usr.UserId,
                        (post, usr) => new PostsViewModel
@@ -50,8 +56,8 @@ namespace ASP_CORE_REACT.Controllers
         [HttpPost("[action]")]
         public void DeletePost([FromBody] Posts post)
         {
-            Database.Remove(Database.Posts.FirstOrDefault(e => e.PostId == post.PostId));
-            Database.SaveChanges();
+            _context.Remove(_context.Posts.FirstOrDefault(e => e.PostId == post.PostId));
+            _context.SaveChanges();
         }
 
     }

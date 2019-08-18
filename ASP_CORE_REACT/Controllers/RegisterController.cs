@@ -12,14 +12,16 @@ using ASP_CORE_REACT.classes;
 namespace ASP_CORE_REACT.Controllers
 {
     [Route("[controller]")]
-    public class RegisterController : BaseController
+    public class RegisterController : Controller
     {
 
         private readonly IHasher _hasher;
+        private BloggingDBContext _context;
 
-        public RegisterController(IHasher hasher)
+        public RegisterController(IHasher hasher, BloggingDBContext context)
         {
             _hasher = hasher;
+            _context = context;
         }
 
         [HttpPost("[action]")]
@@ -28,8 +30,8 @@ namespace ASP_CORE_REACT.Controllers
             try
             {
                 user.PasswordHash = _hasher.HashString(user.PasswordHash);
-                Database.Users.Add(user);
-                Database.SaveChanges();
+                _context.Users.Add(user);
+                _context.SaveChanges();
             } catch (DbUpdateException ex)
             {
                 if (ex.InnerException.Message.Contains("UNIQUE"))

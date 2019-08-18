@@ -8,36 +8,43 @@ using ASP_CORE_REACT.Models;
 namespace ASP_CORE_REACT.Controllers
 {
     [Route("api/[controller]")]
-    public class UsersController : BaseController
+    public class UsersController : Controller
     {
+
+        private BloggingDBContext _context;
+        public UsersController(BloggingDBContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet("[action]")]
         public IEnumerable<Users> GetUsers()
         {
-            return Database.Users.AsEnumerable();
+            return _context.Users.AsEnumerable();
         }
 
         [HttpGet("[action]/{userId}")]
         public UserData GetUserNameById(int userId)
         {
-            var foundUser = Database.Users.FirstOrDefault(user => user.UserId == userId);
+            var foundUser = _context.Users.FirstOrDefault(user => user.UserId == userId);
             return new UserData { UserName = foundUser.UserName, UserSurname = foundUser.UserSurname };
         }
 
         [HttpPost("[action]")]
         public void AddUser([FromBody] Users user)
         {
-            Database.Users.Add(user);
-            Database.SaveChanges();
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         [HttpPost("[action]")]
         public void RemoveUser([FromBody] Users user)
         {
-            var removeUser = Database.Users.FirstOrDefault(e => e.UserId == user.UserId);
-            Database.Comments.RemoveRange(Database.Comments.Where(com => com.UserId == removeUser.UserId));
-            Database.Posts.RemoveRange(Database.Posts.Where(post => post.UserId == removeUser.UserId));
-            Database.Users.Remove(removeUser);
-            Database.SaveChanges();
+            var removeUser = _context.Users.FirstOrDefault(e => e.UserId == user.UserId);
+            _context.Comments.RemoveRange(_context.Comments.Where(com => com.UserId == removeUser.UserId));
+            _context.Posts.RemoveRange(_context.Posts.Where(post => post.UserId == removeUser.UserId));
+            _context.Users.Remove(removeUser);
+            _context.SaveChanges();
         }
     }
 
