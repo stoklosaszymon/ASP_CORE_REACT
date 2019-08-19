@@ -27,6 +27,7 @@ namespace ASP_CORE_REACT
             services.AddDbContext<BloggingDBContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddTransient<IHasher, Hasher>();
+            services.AddTransient<IUsersService, UsersService>();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

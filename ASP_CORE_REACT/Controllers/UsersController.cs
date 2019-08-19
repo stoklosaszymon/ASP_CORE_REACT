@@ -4,49 +4,44 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ASP_CORE_REACT.Models;
+using ASP_CORE_REACT.interfaces;
+using ASP_CORE_REACT.classes;
 
 namespace ASP_CORE_REACT.Controllers
 {
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
+        private IUsersService _userService;
 
-        private BloggingDBContext _context;
-
-
-        public UsersController(BloggingDBContext context)
+        public UsersController(IUsersService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         [HttpGet("[action]")]
         public IEnumerable<Users> GetUsers()
         {
-            return _context.Users.AsEnumerable();
+            return _userService.GetUsers();
         }
 
         [HttpGet("[action]/{userId}")]
         public UserData GetUserNameById(int userId)
         {
-            var foundUser = _context.Users.FirstOrDefault(user => user.UserId == userId);
-            return new UserData { UserName = foundUser.UserName, UserSurname = foundUser.UserSurname };
+            return _userService.GetUserNameById(userId);
         }
 
         [HttpPost("[action]")]
-        public void AddUser([FromBody] Users user)
+        public Users AddUser([FromBody] Users user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            _userService.AddUser(user);
+            return user;
         }
 
         [HttpPost("[action]")]
         public void RemoveUser([FromBody] Users user)
         {
-            var removeUser = _context.Users.FirstOrDefault(e => e.UserId == user.UserId);
-            _context.Comments.RemoveRange(_context.Comments.Where(com => com.UserId == removeUser.UserId));
-            _context.Posts.RemoveRange(_context.Posts.Where(post => post.UserId == removeUser.UserId));
-            _context.Users.Remove(removeUser);
-            _context.SaveChanges();
+            _userService.RemoveUser(user);
         }
     }
 
