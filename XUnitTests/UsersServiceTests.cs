@@ -16,7 +16,7 @@ using ASP_CORE_REACT.classes;
 
 namespace XUnitTests
 {
-        public class UserControllerTest : IClassFixture<WebApplicationFactory<Startup>>
+        public class UserServiceTest //: IClassFixture<WebApplicationFactory<Startup>>
         {
         private static Mock<DbSet<T>> CreateDbSetMock<T>(IEnumerable<T> elements) where T : class
         {
