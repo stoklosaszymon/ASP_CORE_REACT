@@ -6,8 +6,8 @@ export class Chat extends Component {
         super(props);
         console.log(signalR.VERSION);
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/chat", { transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling })
-            .configureLogging(signalR.LogLevel.Trace)
+            .withUrl("/chat")
+            .configureLogging(signalR.LogLevel.Information)
             .build();
 
         this.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
@@ -17,7 +17,7 @@ export class Chat extends Component {
         });
 
         this.hubConnection
-            .start({ transport: signalR.HttpTransportType.WebSockets })
+            .start()
             .then(() => console.log('Connection started!'))
             .catch(err => console.log(err));
 

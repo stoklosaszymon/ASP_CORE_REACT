@@ -45,10 +45,7 @@ namespace ASP_CORE_REACT
                        .AllowCredentials();
             }));
 
-            services.AddSignalR( hubOptions => { 
-                hubOptions.EnableDetailedErrors = true;
-                hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(1);
-            });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +66,12 @@ namespace ASP_CORE_REACT
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseSignalR((configure) =>
+            {
+                configure.MapHub<ChatHub>("/chat");
+
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -84,22 +87,6 @@ namespace ASP_CORE_REACT
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
-
-
-            app.UseStaticFiles();
-            app.UseFileServer();
-            app.UseCors("CorsPolicy");
-            app.UseSignalR((configure) =>
-            {
-                var desiredTransports =
-                    HttpTransportType.WebSockets |
-                    HttpTransportType.LongPolling;
-
-                configure.MapHub<ChatHub>("/chat", (options) =>
-                {
-                    options.Transports = desiredTransports;
-                });
             });
         }
     }
