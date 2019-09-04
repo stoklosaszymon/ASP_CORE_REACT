@@ -6,6 +6,7 @@ import { Users } from './components/Users';
 import  Posts  from './components/Posts';
 import { Post } from './components/Post';
 import { Register } from './components/Register'
+import { Chat } from './components/Chat'
 
 export default class App extends Component {
     static displayName = App.name;
@@ -19,6 +20,7 @@ export default class App extends Component {
         <Route path='/posts' component={Posts} />
         <Route path='/post/:id' component={Post} />
         <Route path='/register' component={Register} />
+        <Route path='/chat' component={Chat} />
 
       </Layout>
     );

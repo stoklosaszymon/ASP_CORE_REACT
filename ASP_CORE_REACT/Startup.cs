@@ -3,12 +3,15 @@ using ASP_CORE_REACT.interfaces;
 using ASP_CORE_REACT.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SignalRChat.Hubs;
+using System;
 
 namespace ASP_CORE_REACT
 {
@@ -32,6 +35,19 @@ namespace ASP_CORE_REACT
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
+            });
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyMethod().AllowAnyHeader()
+                       .WithOrigins("http://localhost:44366")
+                       .AllowCredentials();
+            }));
+
+            services.AddSignalR( hubOptions => { 
+                hubOptions.EnableDetailedErrors = true;
+                hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(1);
             });
         }
 
@@ -68,6 +84,22 @@ namespace ASP_CORE_REACT
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+
+
+            app.UseStaticFiles();
+            app.UseFileServer();
+            app.UseCors("CorsPolicy");
+            app.UseSignalR((configure) =>
+            {
+                var desiredTransports =
+                    HttpTransportType.WebSockets |
+                    HttpTransportType.LongPolling;
+
+                configure.MapHub<ChatHub>("/chat", (options) =>
+                {
+                    options.Transports = desiredTransports;
+                });
             });
         }
     }
